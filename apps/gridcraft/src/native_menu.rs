@@ -173,8 +173,8 @@ fn tree() -> Vec<(&'static str, Vec<Entry>)> {
             vec![
                 ("Agent Control (MCP)…", "dialog:agents", None),
                 ("Contributors…", "dialog:about:Contributors", None),
-                ("GridCraft on getartcraft.com", "url:https://getartcraft.com/apps/gridcraft", None),
-                ("Join the ArtCraft Discord…", "url:https://discord.gg/artcraft", None),
+                ("arqam on studio.creative.ps", "url:https://arqam.studio.creative.ps", None),
+                ("Creative Studio…", "url:https://studio.creative.ps", None),
             ],
         ),
     ]
@@ -200,8 +200,8 @@ fn select_theme(app: &mut SheetApp, id: &str) -> bool {
 impl NativeMenu {
     pub fn install(ctx: &egui::Context) -> NativeMenu {
         let menu = Menu::new();
-        let app_menu = Submenu::new("GridCraft", true);
-        let about = MenuItem::with_id("dialog:about", "About GridCraft", true, None);
+        let app_menu = Submenu::new("arqam", true);
+        let about = MenuItem::with_id("dialog:about", "About arqam", true, None);
         let _ = app_menu.append_items(&[
             &about,
             &PredefinedMenuItem::separator(),

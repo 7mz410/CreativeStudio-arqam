@@ -7,13 +7,13 @@
   <key>CFBundleDevelopmentRegion</key>
   <string>en</string>
   <key>CFBundleDisplayName</key>
-  <string>GridCraft</string>
+  <string>arqam</string>
   <key>CFBundleName</key>
-  <string>GridCraft</string>
+  <string>arqam</string>
   <key>CFBundleExecutable</key>
   <string>GridCraft</string>
   <key>CFBundleIdentifier</key>
-  <string>ai.storyteller.gridcraft</string>
+  <string>ps.creative.studio.arqam</string>
   <key>CFBundleInfoDictionaryVersion</key>
   <string>6.0</string>
   <key>CFBundlePackageType</key>

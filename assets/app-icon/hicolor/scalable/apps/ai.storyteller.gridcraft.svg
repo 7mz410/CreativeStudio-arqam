@@ -1,29 +1,33 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
-  <!-- GridCraft PLACEHOLDER icon: a ledger page with a selected cell, on GridCraft green.
-       Original work; temporary until the owner's engraved creature portrait replaces it
-       (craftrules standards/icon-design.md). Palette: ink #0b0b0c, paper #efe9dc,
-       app colour #1f9d55 (proposed). -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><clipPath id="t"><rect width="512" height="512" rx="112"/></clipPath></defs><g clip-path="url(#t)"><rect width="512" height="512" fill="#0d2d3f"/><svg x="80" y="80" width="352" height="352" viewBox="0 0 143.398 154.728">
   <defs>
-    <clipPath id="tile"><rect width="512" height="512" rx="112"/></clipPath>
+    <style>
+      .cls-1{fill:#eb1b3c}
+      .cls-2{fill:#0d2d3f}
+    </style>
   </defs>
-  <g clip-path="url(#tile)">
-    <rect width="512" height="512" fill="#1f9d55"/>
-    <g transform="rotate(-6 256 268)" stroke="#0b0b0c" stroke-linejoin="round" stroke-linecap="round">
-      <!-- page with a folded top-right corner -->
-      <path d="M112 76 H336 L404 144 V440 H112 Z" fill="#efe9dc" stroke-width="14"/>
-      <path d="M336 76 V144 H404" fill="none" stroke-width="12"/>
-      <!-- title lines -->
-      <path d="M146 106 H272 M146 130 H232" stroke-width="12"/>
-      <!-- header row and row-number column, in the app colour -->
-      <path d="M112 164 H404 V204 H164 V440 H112 Z" fill="#1f9d55" stroke="none"/>
-      <!-- grid -->
-      <path d="M112 164 H404 M112 204 H404 M112 250 H404 M112 296 H404 M112 342 H404 M112 388 H404
-               M164 164 V440 M244 164 V440 M324 164 V440" fill="none" stroke-width="8"/>
-      <!-- the selected cell and its fill handle -->
-      <rect x="244" y="250" width="80" height="46" fill="none" stroke-width="16"/>
-      <rect x="312" y="284" width="24" height="24" fill="#0b0b0c" stroke="#efe9dc" stroke-width="5"/>
-      <!-- double rule under the total -->
-      <path d="M252 410 H316 M252 424 H316" stroke-width="7"/>
+  
+  <g id="Asset_18" data-name="Asset 18">
+    <g>
+      <g>
+        <g>
+          <path d="M129.307 25.415 C129.344 26.128 128.981 26.815 128.348 27.182 L114.828 35.017 L118.261 49.792 C118.449 50.601 118.098 51.439 117.39 51.873 C116.682 52.306 115.775 52.237 115.141 51.702 L102.344 40.903 C101.53 40.216 101.428 39 102.114 38.187 C102.801 37.373 104.017 37.27 104.83 37.957 L113.193 45.014 L110.75 34.501 C110.559 33.676 110.928 32.822 111.661 32.397 L121.133 26.908 L110.116 25.953 C109.285 25.881 108.595 25.283 108.405 24.471 L105.922 13.85 L101.446 23.896 C101.112 24.646 100.34 25.102 99.522 25.033 L88.407 24.087 L96.772 31.177 C97.427 31.732 97.636 32.653 97.284 33.436 L93.33 42.248 C92.895 43.22 91.754 43.654 90.783 43.218 C89.812 42.782 89.378 41.641 89.813 40.67 L93.174 33.181 L81.311 23.125 C80.671 22.583 80.456 21.69 80.777 20.915 C81.099 20.141 81.885 19.664 82.72 19.735 L98.483 21.075 L104.733 7.045 C105.07 6.289 105.852 5.832 106.676 5.911 C107.5 5.989 108.183 6.585 108.371 7.391 L111.841 22.233 L127.548 23.594 C128.386 23.667 129.08 24.274 129.263 25.095 C129.287 25.202 129.301 25.309 129.307 25.415 Z" class="cls-1"/>
+        </g>
+      </g>
+      <g>
+        <path d="M8.002 121.111 C7.267 121.111 6.56 120.705 6.21 120.003 C5.718 119.014 6.12 117.813 7.108 117.321 C7.761 116.996 72.554 84.273 92.476 34.64 C92.887 33.615 94.052 33.117 95.077 33.528 C96.103 33.94 96.6 35.104 96.188 36.13 C85.457 62.866 62.272 84.499 44.714 97.939 C25.754 112.452 9.058 120.819 8.891 120.902 C8.604 121.044 8.301 121.111 8.002 121.111 Z" class="cls-1"/>
+      </g>
+      <g>
+        <path d="M41.59 152.728 L19.326 152.728 L19.326 115.345 L41.59 115.345 Z" class="cls-2"/>
+      </g>
+      <g>
+        <path d="M85.831 152.728 L63.567 152.728 L63.567 85.542 L85.831 85.542 Z" class="cls-2"/>
+      </g>
+      <g>
+        <path d="M130.073 152.728 L107.808 152.728 L107.808 55.465 L130.073 55.465 Z" class="cls-2"/>
+      </g>
+      <g>
+        <path d="M141.398 154.728 L0 154.728 L0 2 C0 0.896 0.896 0 2 0 C3.104 0 4 0.896 4 2 L4 150.728 L141.398 150.728 C142.503 150.728 143.398 151.623 143.398 152.728 C143.398 153.832 142.503 154.728 141.398 154.728 Z" class="cls-1"/>
+      </g>
     </g>
   </g>
-</svg>
+</svg></g></svg>

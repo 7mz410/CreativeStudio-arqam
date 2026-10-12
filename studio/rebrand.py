@@ -40,6 +40,127 @@ RULES = [
     ('packaging/windows/gridcraft.wxs', '<Property Id="ARPURLUPDATEINFO" Value="https://getartcraft.com/apps/gridcraft" />', f'<Property Id="ARPURLUPDATEINFO" Value="{REPO}/releases" />'),
     ('packaging/windows/gridcraft.wxs', '<Property Id="ARPHELPLINK" Value="https://discord.gg/artcraft" />', f'<Property Id="ARPHELPLINK" Value="{REPO}/issues" />'),
     ('packaging/linux/nfpm.yaml', 'homepage: https://getartcraft.com/apps/gridcraft', f'homepage: {APP_SITE}'),
+    # Arabic interface and font fallback (Creative Studio).
+    ('crates/ui-egui/Cargo.toml',
+     'image = { workspace = true }\nskrifa = { workspace = true }',
+     'image = { workspace = true }\nskrifa = { workspace = true }\nunicode-bidi = "0.3.18"',
+     'unicode-bidi'),
+    ('ATTRIBUTION.md',
+     '| `assets/app-icon/LICENSE.txt` | Hamza Abu Ayyash (Creative Studio) | the arqam star (`docs/studio/arqam.svg`) on a navy tile, rendered by `packaging/icons.sh` | MIT OR Apache-2.0 | App icon (see `assets/app-icon/README.md`) |',
+     '| `assets/app-icon/LICENSE.txt` | Hamza Abu Ayyash (Creative Studio) | the arqam star (`docs/studio/arqam.svg`) on a navy tile, rendered by `packaging/icons.sh` | MIT OR Apache-2.0 | App icon (see `assets/app-icon/README.md`) |\n| `assets/fonts/IBMPlexSansArabic-Regular.ttf` | IBM Corp. (Mike Abbink, Bold Monday) | https://github.com/google/fonts/tree/main/ofl/ibmplexsansarabic | OFL-1.1 (`assets/fonts/OFL-IBMPlexSansArabic.txt`) | Creative Studio: Arabic UI font |\n| `assets/fonts/IBMPlexSansArabic-SemiBold.ttf` | IBM Corp. (Mike Abbink, Bold Monday) | https://github.com/google/fonts/tree/main/ofl/ibmplexsansarabic | OFL-1.1 (`assets/fonts/OFL-IBMPlexSansArabic.txt`) | Creative Studio: Arabic UI font |\n| `assets/fonts/OFL-IBMPlexSansArabic.txt` | (licence text) | upstream project | — |  |',
+     'IBMPlexSansArabic'),
+    ('crates/ui-egui/src/theme.rs',
+     '''    let mut fonts = FontDefinitions::default();
+    let base_prop: Vec<String> = fonts.families.get(&FontFamily::Proportional).cloned().unwrap_or_default();
+    let base_mono: Vec<String> = fonts.families.get(&FontFamily::Monospace).cloned().unwrap_or_default();
+    let mut bound: Vec<String> = Vec::new();
+    // The non-Latin fallback faces have to sit at the end of each chain: a Latin font owns Latin,
+    // and epaint picks the first face that has the glyph, so they only catch their own scripts.
+    let fallback = load_fallback(&mut fonts, HanOrder::of(language));
+    for role in [UI, UI_BOLD, CELL, CELL_BOLD, CELL_ITALIC, CELL_BOLD_ITALIC, SERIF, MONO] {
+        let paths = candidates(role);
+        let refs: Vec<(&str, u32)> = paths.iter().map(|(p, i)| (p.as_str(), *i)).collect();
+        let mut chain: Vec<String> = Vec::new();
+        if let Some(fd) = try_load(&refs) {
+            let key = format!("sys-{role}");
+            fonts.font_data.insert(key.clone(), Arc::new(fd));
+            chain.push(key);
+        } else if role == UI_BOLD {
+            chain.push(format!("sys-{UI}"));
+        } else if role.starts_with("cell-") {
+            chain.push(format!("sys-{CELL}"));
+        }
+        chain.extend(if role == MONO { base_mono.clone() } else { base_prop.clone() });
+        chain.extend(fallback.iter().cloned());''',
+     '''    let mut fonts = FontDefinitions::default();
+    let base_prop: Vec<String> = fonts.families.get(&FontFamily::Proportional).cloned().unwrap_or_default();
+    let base_mono: Vec<String> = fonts.families.get(&FontFamily::Monospace).cloned().unwrap_or_default();
+    let mut bound: Vec<String> = Vec::new();
+    fonts.font_data.insert(
+        "IBMPlexSansArabic".to_string(),
+        Arc::new(FontData::from_static(include_bytes!("../../../assets/fonts/IBMPlexSansArabic-Regular.ttf"))),
+    );
+    fonts.font_data.insert(
+        "IBMPlexSansArabic-SemiBold".to_string(),
+        Arc::new(FontData::from_static(include_bytes!("../../../assets/fonts/IBMPlexSansArabic-SemiBold.ttf"))),
+    );
+    // The non-Latin fallback faces have to sit at the end of each chain: a Latin font owns Latin,
+    // and epaint picks the first face that has the glyph, so they only catch their own scripts.
+    let fallback = load_fallback(&mut fonts, HanOrder::of(language));
+    for role in [UI, UI_BOLD, CELL, CELL_BOLD, CELL_ITALIC, CELL_BOLD_ITALIC, SERIF, MONO] {
+        let paths = candidates(role);
+        let refs: Vec<(&str, u32)> = paths.iter().map(|(p, i)| (p.as_str(), *i)).collect();
+        let mut chain: Vec<String> = Vec::new();
+        if let Some(fd) = try_load(&refs) {
+            let key = format!("sys-{role}");
+            fonts.font_data.insert(key.clone(), Arc::new(fd));
+            chain.push(key);
+        } else if role == UI_BOLD {
+            chain.push(format!("sys-{UI}"));
+        } else if role.starts_with("cell-") {
+            chain.push(format!("sys-{CELL}"));
+        }
+        chain.extend(if role == MONO { base_mono.clone() } else { base_prop.clone() });
+        let arabic = if role == UI_BOLD || role == CELL_BOLD || role == CELL_BOLD_ITALIC {
+            "IBMPlexSansArabic-SemiBold"
+        } else {
+            "IBMPlexSansArabic"
+        };
+        chain.push(arabic.to_string());
+        chain.extend(fallback.iter().cloned());''',
+     'IBMPlexSansArabic'),
+    ('crates/ui-egui/src/i18n.rs',
+     'mod cs;\nmod de;\nmod es;\nmod fr;\nmod ko;\nmod pt;\nmod ru;\nmod zh;',
+     'mod ar;\npub(crate) mod bidi;\nmod cs;\nmod de;\nmod es;\nmod fr;\nmod ko;\nmod pt;\nmod ru;\nmod zh;',
+     'pub(crate) mod bidi;'),
+    ('crates/ui-egui/src/i18n.rs',
+     '    #[serde(rename = "pt")]\n    PtBr,\n    De,\n    Cs,\n    Fr,\n}',
+     '    #[serde(rename = "pt")]\n    PtBr,\n    De,\n    Cs,\n    Fr,\n    Ar,\n}',
+     '    Ar,\n}'),
+    ('crates/ui-egui/src/i18n.rs',
+     'pub const ALL: [Self; 10] = [Self::En, Self::Es, Self::Zh, Self::Ja, Self::Ko, Self::Ru, Self::PtBr, Self::De, Self::Cs, Self::Fr];',
+     'pub const ALL: [Self; 11] = [Self::En, Self::Es, Self::Zh, Self::Ja, Self::Ko, Self::Ru, Self::PtBr, Self::De, Self::Cs, Self::Fr, Self::Ar];',
+     'Self::Ar];'),
+    ('crates/ui-egui/src/i18n.rs',
+     '            Self::Cs => "Čeština",\n            Self::Fr => "Français",\n        }',
+     '            Self::Cs => "Čeština",\n            Self::Fr => "Français",\n            Self::Ar => "العربية",\n        }',
+     'Self::Ar => "العربية"'),
+    ('crates/ui-egui/src/i18n.rs',
+     '            Self::Cs => "cs",\n            Self::Fr => "fr",\n        }',
+     '            Self::Cs => "cs",\n            Self::Fr => "fr",\n            Self::Ar => "ar",\n        }',
+     'Self::Ar => "ar"'),
+    ('crates/ui-egui/src/i18n.rs',
+     '            "cs" => Some(Self::Cs),\n            "fr" => Some(Self::Fr),\n            _ => None,',
+     '            "cs" => Some(Self::Cs),\n            "fr" => Some(Self::Fr),\n            "ar" => Some(Self::Ar),\n            _ => None,',
+     '"ar" => Some(Self::Ar)'),
+    ('crates/ui-egui/src/i18n.rs',
+     '            Self::Cs => cs::translate(text),\n            Self::Fr => fr::translate(text),\n        };',
+     '            Self::Cs => cs::translate(text),\n            Self::Fr => fr::translate(text),\n            Self::Ar => ar::translate(text),\n        };',
+     'Self::Ar => ar::translate(text)'),
+    ('crates/ui-egui/src/i18n.rs',
+     '''        assert_eq!(Language::from_tag("fr-FR"), Some(Language::Fr));
+        assert_eq!(Language::from_tag("fr_CA"), Some(Language::Fr));
+        assert_eq!(Language::parse("fr"), Some(Language::Fr));
+    }''',
+     '''        assert_eq!(Language::from_tag("fr-FR"), Some(Language::Fr));
+        assert_eq!(Language::from_tag("fr_CA"), Some(Language::Fr));
+        assert_eq!(Language::parse("fr"), Some(Language::Fr));
+        assert_eq!(Language::from_tag("ar-SA"), Some(Language::Ar));
+        assert_eq!(Language::parse("ar"), Some(Language::Ar));
+    }
+
+    #[test]
+    fn arabic_translates_labels() {
+        assert_eq!(Language::Ar.tr("New"), "جديد");
+        assert_eq!(Language::Ar.tr("File"), "ملف");
+        assert_eq!(Language::Ar.tr("Save"), "حفظ");
+        assert_eq!(Language::Ar.tr("Wrap Text"), crate::i18n::bidi::visual("التفاف النص"));
+    }''',
+     'arabic_translates_labels'),
+    ('crates/ui-egui/src/i18n/fr.rs',
+     '        "Footer" => "Feuille de\\nprévision",',
+     '        "Footer" => "Feuille de\\nprévision",\n        "Different First Page" => "Première page différente",\n        "Different Odd & Even Pages" => "Pages paires et impaires différentes",',
+     'Première page différente'),
 ]
 # Text in string literals and catalogs, before the general rename.
 LITERALS = []

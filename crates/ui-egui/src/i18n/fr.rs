@@ -303,6 +303,8 @@ pub(super) fn translate(text: &str) -> Option<&'static str> {
         "(none)" => "(aucun)",
         "Header" => "Informations",
         "Footer" => "Feuille de\nprévision",
+        "Different First Page" => "Première page différente",
+        "Different Odd & Even Pages" => "Pages paires et impaires différentes",
         "Page\nNumber" => "Page précédente",
         "Number\nof Pages" => "Général",
         "Current\nDate" => "Heure\nactuelle",

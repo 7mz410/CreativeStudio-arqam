@@ -9,6 +9,8 @@
 
 use serde::{Deserialize, Serialize};
 
+mod ar;
+pub(crate) mod bidi;
 mod cs;
 mod de;
 mod es;
@@ -33,10 +35,11 @@ pub enum Language {
     De,
     Cs,
     Fr,
+    Ar,
 }
 
 impl Language {
-    pub const ALL: [Self; 10] = [Self::En, Self::Es, Self::Zh, Self::Ja, Self::Ko, Self::Ru, Self::PtBr, Self::De, Self::Cs, Self::Fr];
+    pub const ALL: [Self; 11] = [Self::En, Self::Es, Self::Zh, Self::Ja, Self::Ko, Self::Ru, Self::PtBr, Self::De, Self::Cs, Self::Fr, Self::Ar];
 
     /// The language's own name, shown in the switcher.
     pub fn name(self) -> &'static str {
@@ -51,6 +54,7 @@ impl Language {
             Self::De => "Deutsch",
             Self::Cs => "Čeština",
             Self::Fr => "Français",
+            Self::Ar => "العربية",
         }
     }
 
@@ -67,6 +71,7 @@ impl Language {
             Self::De => "de",
             Self::Cs => "cs",
             Self::Fr => "fr",
+            Self::Ar => "ar",
         }
     }
 
@@ -86,6 +91,7 @@ impl Language {
             "de" => Some(Self::De),
             "cs" => Some(Self::Cs),
             "fr" => Some(Self::Fr),
+            "ar" => Some(Self::Ar),
             _ => None,
         }
     }
@@ -123,6 +129,7 @@ impl Language {
             Self::De => de::translate(text),
             Self::Cs => cs::translate(text),
             Self::Fr => fr::translate(text),
+            Self::Ar => ar::translate(text),
         };
         translated.unwrap_or_else(|| text.rsplit_once('|').map_or(text, |(_, label)| label))
     }
@@ -654,6 +661,16 @@ mod tests {
         assert_eq!(Language::from_tag("fr-FR"), Some(Language::Fr));
         assert_eq!(Language::from_tag("fr_CA"), Some(Language::Fr));
         assert_eq!(Language::parse("fr"), Some(Language::Fr));
+        assert_eq!(Language::from_tag("ar-SA"), Some(Language::Ar));
+        assert_eq!(Language::parse("ar"), Some(Language::Ar));
+    }
+
+    #[test]
+    fn arabic_translates_labels() {
+        assert_eq!(Language::Ar.tr("New"), "جديد");
+        assert_eq!(Language::Ar.tr("File"), "ملف");
+        assert_eq!(Language::Ar.tr("Save"), "حفظ");
+        assert_eq!(Language::Ar.tr("Wrap Text"), crate::i18n::bidi::visual("التفاف النص"));
     }
 
     #[test]

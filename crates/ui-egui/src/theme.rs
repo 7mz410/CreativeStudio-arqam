@@ -390,6 +390,14 @@ pub fn font_definitions_with(language: crate::i18n::Language, used: &[String]) -
     let base_prop: Vec<String> = fonts.families.get(&FontFamily::Proportional).cloned().unwrap_or_default();
     let base_mono: Vec<String> = fonts.families.get(&FontFamily::Monospace).cloned().unwrap_or_default();
     let mut bound: Vec<String> = Vec::new();
+    fonts.font_data.insert(
+        "IBMPlexSansArabic".to_string(),
+        Arc::new(FontData::from_static(include_bytes!("../../../assets/fonts/IBMPlexSansArabic-Regular.ttf"))),
+    );
+    fonts.font_data.insert(
+        "IBMPlexSansArabic-SemiBold".to_string(),
+        Arc::new(FontData::from_static(include_bytes!("../../../assets/fonts/IBMPlexSansArabic-SemiBold.ttf"))),
+    );
     // The non-Latin fallback faces have to sit at the end of each chain: a Latin font owns Latin,
     // and epaint picks the first face that has the glyph, so they only catch their own scripts.
     let fallback = load_fallback(&mut fonts, HanOrder::of(language));
@@ -407,6 +415,9 @@ pub fn font_definitions_with(language: crate::i18n::Language, used: &[String]) -
             chain.push(format!("sys-{CELL}"));
         }
         chain.extend(if role == MONO { base_mono.clone() } else { base_prop.clone() });
+        let arabic =
+            if role == UI_BOLD || role == CELL_BOLD || role == CELL_BOLD_ITALIC { "IBMPlexSansArabic-SemiBold" } else { "IBMPlexSansArabic" };
+        chain.push(arabic.to_string());
         chain.extend(fallback.iter().cloned());
         chain.retain(|k| fonts.font_data.contains_key(k));
         fonts.families.insert(FontFamily::Name(role.into()), chain);

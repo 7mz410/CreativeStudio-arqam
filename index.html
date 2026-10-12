@@ -6,8 +6,8 @@
   <title>arqam</title>
   
 <script type="module">
-import init, * as bindings from './gridcraft-web-1f16dd40b8d67fc0.js';
-const wasm = await init({ module_or_path: './gridcraft-web-1f16dd40b8d67fc0_bg.wasm' });
+import init, * as bindings from './gridcraft-web-e714ec21fb02d0a7.js';
+const wasm = await init({ module_or_path: './gridcraft-web-e714ec21fb02d0a7_bg.wasm' });
 
 
 window.wasmBindings = bindings;
@@ -55,7 +55,7 @@ dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
     #status:not(.err) { display: none; }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&display=swap" rel="stylesheet">
-<link rel="modulepreload" href="./gridcraft-web-1f16dd40b8d67fc0.js" crossorigin="anonymous" integrity="sha384-mvw7xp4nOEIxJtvQLix6efReeobPpE1FCAUW4P/vfoHFWv/j3a6xxYtsGDdWg+t6"><link rel="preload" href="./gridcraft-web-1f16dd40b8d67fc0_bg.wasm" crossorigin="anonymous" integrity="sha384-JM2PU8zXrNW0kIy53tanyOF89wWrPoRigYIAaLTQRxyOtSsawGGto1GdLK/Kn9gb" as="fetch" type="application/wasm">  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="modulepreload" href="./gridcraft-web-e714ec21fb02d0a7.js" crossorigin="anonymous" integrity="sha384-+qlUn7Pt2BZ+y2qwf9tf4onbvh0bC0A7fOIyjpzyHxHdNB6NjH5Xnsnszo+slb91"><link rel="preload" href="./gridcraft-web-e714ec21fb02d0a7_bg.wasm" crossorigin="anonymous" integrity="sha384-AR3sa5L7UYnOQGuv8MVk/IVriAQyJXpBCYlkDt3Kd1qiksjQxQAG4U3vXOJ61agk" as="fetch" type="application/wasm">  <link rel="icon" type="image/svg+xml" href="favicon.svg">
 </head>
 <body>
   <canvas id="gridcraft_canvas"></canvas>

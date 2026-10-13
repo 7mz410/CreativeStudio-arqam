@@ -20,5 +20,5 @@ jobs:
       app: arqam
       package: gridcraft
       version_var: GRIDCRAFT_VERSION
-      bundle: GridCraft.app
+      bundle: arqam.app
       tag: ${{ github.ref_name }}

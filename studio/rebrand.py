@@ -50,32 +50,9 @@ RULES = [
      '| `assets/app-icon/LICENSE.txt` | Hamza Abu Ayyash (Creative Studio) | the arqam star (`docs/studio/arqam.svg`) on a navy tile, rendered by `packaging/icons.sh` | MIT OR Apache-2.0 | App icon (see `assets/app-icon/README.md`) |\n| `assets/fonts/IBMPlexSansArabic-Regular.ttf` | IBM Corp. (Mike Abbink, Bold Monday) | https://github.com/google/fonts/tree/main/ofl/ibmplexsansarabic | OFL-1.1 (`assets/fonts/OFL-IBMPlexSansArabic.txt`) | Creative Studio: Arabic UI font |\n| `assets/fonts/IBMPlexSansArabic-SemiBold.ttf` | IBM Corp. (Mike Abbink, Bold Monday) | https://github.com/google/fonts/tree/main/ofl/ibmplexsansarabic | OFL-1.1 (`assets/fonts/OFL-IBMPlexSansArabic.txt`) | Creative Studio: Arabic UI font |\n| `assets/fonts/OFL-IBMPlexSansArabic.txt` | (licence text) | upstream project | — |  |',
      'IBMPlexSansArabic'),
     ('crates/ui-egui/src/theme.rs',
-     '''    let mut fonts = FontDefinitions::default();
-    let base_prop: Vec<String> = fonts.families.get(&FontFamily::Proportional).cloned().unwrap_or_default();
-    let base_mono: Vec<String> = fonts.families.get(&FontFamily::Monospace).cloned().unwrap_or_default();
-    let mut bound: Vec<String> = Vec::new();
-    // The non-Latin fallback faces have to sit at the end of each chain: a Latin font owns Latin,
-    // and epaint picks the first face that has the glyph, so they only catch their own scripts.
-    let fallback = load_fallback(&mut fonts, HanOrder::of(language));
-    for role in [UI, UI_BOLD, CELL, CELL_BOLD, CELL_ITALIC, CELL_BOLD_ITALIC, SERIF, MONO] {
-        let paths = candidates(role);
-        let refs: Vec<(&str, u32)> = paths.iter().map(|(p, i)| (p.as_str(), *i)).collect();
-        let mut chain: Vec<String> = Vec::new();
-        if let Some(fd) = try_load(&refs) {
-            let key = format!("sys-{role}");
-            fonts.font_data.insert(key.clone(), Arc::new(fd));
-            chain.push(key);
-        } else if role == UI_BOLD {
-            chain.push(format!("sys-{UI}"));
-        } else if role.starts_with("cell-") {
-            chain.push(format!("sys-{CELL}"));
-        }
-        chain.extend(if role == MONO { base_mono.clone() } else { base_prop.clone() });
-        chain.extend(fallback.iter().cloned());''',
-     '''    let mut fonts = FontDefinitions::default();
-    let base_prop: Vec<String> = fonts.families.get(&FontFamily::Proportional).cloned().unwrap_or_default();
-    let base_mono: Vec<String> = fonts.families.get(&FontFamily::Monospace).cloned().unwrap_or_default();
-    let mut bound: Vec<String> = Vec::new();
+     '''    let mut bound: Vec<String> = Vec::new();
+''',
+     '''    let mut bound: Vec<String> = Vec::new();
     fonts.font_data.insert(
         "IBMPlexSansArabic".to_string(),
         Arc::new(FontData::from_static(include_bytes!("../../../assets/fonts/IBMPlexSansArabic-Regular.ttf"))),
@@ -84,30 +61,19 @@ RULES = [
         "IBMPlexSansArabic-SemiBold".to_string(),
         Arc::new(FontData::from_static(include_bytes!("../../../assets/fonts/IBMPlexSansArabic-SemiBold.ttf"))),
     );
-    // The non-Latin fallback faces have to sit at the end of each chain: a Latin font owns Latin,
-    // and epaint picks the first face that has the glyph, so they only catch their own scripts.
-    let fallback = load_fallback(&mut fonts, HanOrder::of(language));
-    for role in [UI, UI_BOLD, CELL, CELL_BOLD, CELL_ITALIC, CELL_BOLD_ITALIC, SERIF, MONO] {
-        let paths = candidates(role);
-        let refs: Vec<(&str, u32)> = paths.iter().map(|(p, i)| (p.as_str(), *i)).collect();
-        let mut chain: Vec<String> = Vec::new();
-        if let Some(fd) = try_load(&refs) {
-            let key = format!("sys-{role}");
-            fonts.font_data.insert(key.clone(), Arc::new(fd));
-            chain.push(key);
-        } else if role == UI_BOLD {
-            chain.push(format!("sys-{UI}"));
-        } else if role.starts_with("cell-") {
-            chain.push(format!("sys-{CELL}"));
-        }
-        chain.extend(if role == MONO { base_mono.clone() } else { base_prop.clone() });
-        let arabic = if role == UI_BOLD || role == CELL_BOLD || role == CELL_BOLD_ITALIC {
-            "IBMPlexSansArabic-SemiBold"
-        } else {
-            "IBMPlexSansArabic"
-        };
-        chain.push(arabic.to_string());
-        chain.extend(fallback.iter().cloned());''',
+''',
+     'IBMPlexSansArabic'),
+    ('crates/ui-egui/src/theme.rs',
+     '''    chain.extend(fallback.iter().cloned());
+    chain.retain''',
+     '''    let arabic = if role == UI_BOLD || role == CELL_BOLD || role == CELL_BOLD_ITALIC {
+        "IBMPlexSansArabic-SemiBold"
+    } else {
+        "IBMPlexSansArabic"
+    };
+    chain.push(arabic.to_string());
+    chain.extend(fallback.iter().cloned());
+    chain.retain''',
      'IBMPlexSansArabic'),
     ('crates/ui-egui/src/i18n.rs',
      'mod cs;\nmod de;\nmod es;\nmod fr;\nmod ko;\nmod pt;\nmod ru;\nmod zh;',
